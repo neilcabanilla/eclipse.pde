@@ -66,7 +66,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
 public class TestPDETemplates {
-
+	// Testing to see if this works to commit
 	private static class NewProjectCreationOperationExtension extends NewProjectCreationOperation {
 		private NewProjectCreationOperationExtension(IFieldData data, IProjectProvider provider,
 				IPluginContentWizard template) {
