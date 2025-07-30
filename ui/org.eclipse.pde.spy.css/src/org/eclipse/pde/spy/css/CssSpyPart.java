@@ -310,7 +310,7 @@ public class CssSpyPart {
 //			Composite nw = (Composite) element.getNativeWidget();
 //			StyledText styledText = new StyledText(nw, SWT.BORDER | SWT.V_SCROLL);
 			
-//		
+//			Commment test
 //			for (String string: test) {
 //				if(string.startsWith("SWT.")) {
 //					string = string.substring(4);
