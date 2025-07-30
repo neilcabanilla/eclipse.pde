@@ -62,22 +62,28 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.tools.views.SpyView;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.StyleProcessor;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
@@ -90,6 +96,9 @@ import org.w3c.dom.css.CSSValue;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+
+
+
 
 @SuppressWarnings("restriction")
 public class CssSpyPart {
@@ -146,7 +155,7 @@ public class CssSpyPart {
 	private Button followSelection;
 	private Button showAllShells;
 	private TableViewer cssPropertiesViewer;
-	private Text cssRules;
+	private StyledText cssRules;
 
 	private final List<Shell> highlights = new LinkedList<>();
 	private final List<Region> highlightRegions = new LinkedList<>();
@@ -293,10 +302,31 @@ public class CssSpyPart {
 			sb.append(MessageFormat.format("\n\n{0}\n  ", Messages.CssSpyPart_CSS_ID_)); //$NON-NLS-1$
 			Util.join(sb, element.getCSSId().split(" +"), "\n  "); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-
+		
 		if (element.getAttribute("style") != null) { //$NON-NLS-1$
 			sb.append(MessageFormat.format("\n\n{0}\n  ", Messages.CssSpyPart_SWT_Style_Bits)); //$NON-NLS-1$
-			Util.join(sb, element.getAttribute("style").split(" +"), "\n  "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//			Util.join(sb, element.getAttribute("style").split(" +"), "\n  "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			String[] test = element.getAttribute("style").split(" +");
+//			Composite nw = (Composite) element.getNativeWidget();
+//			StyledText styledText = new StyledText(nw, SWT.BORDER | SWT.V_SCROLL);
+			
+//		
+//			for (String string: test) {
+//				if(string.startsWith("SWT.")) {
+//					string = string.substring(4);
+//				}
+//			
+//				SpyView spy = new SpyView();
+//				if(spy.getStyle(selected).contains(string)) {
+//					System.out.println("yes");
+//				} else {
+//					System.out.println("no");
+//				}
+//				sb.append("\n  ");
+//				
+//			}
+			
+		
 		}
 
 		sb.append(MessageFormat.format("\n\n{0}\n  ", Messages.CssSpyPart_CSS_Class_Element)).append(element.getClass().getName()); //$NON-NLS-1$
@@ -328,8 +358,34 @@ public class CssSpyPart {
 				sb.append(MessageFormat.format("\n{0} ", MessageFormat.format(Messages.CssSpyPart_Widget_Skin_Class, SWT.SKIN_CLASS))).append(w.getData(SWT.SKIN_CLASS)); //$NON-NLS-1$
 			}
 		}
-
-		cssRules.setText(sb.toString().trim());
+		
+		cssRules.setText(sb.toString().trim()); 
+		
+		//Do the bolding after the text are set
+//		if (element.getAttribute("style") != null) { //$NON-NLS-1$
+//			String[] test = element.getAttribute("style").split(" +");
+//			for (String string: test) {
+//				String temp = string;
+//				
+//				if(string.startsWith("SWT.")) {
+//					string = string.substring(4);
+//				}
+//			
+//				SpyView spy = new SpyView();
+//				if(spy.getStyle(selected).contains(string)) {
+//					StyleRange style = new StyleRange();
+//					int startIndex = sb.indexOf(temp) - 2;
+//					int length = temp.length();
+//					
+//					//Setting the bold style for the string(SWT Style Bits)
+//					style.start = startIndex;
+//					style.length = length;
+//					style.fontStyle = SWT.BOLD;
+//					
+//					cssRules.setStyleRange(style);
+//				}
+//			}
+//		}
 
 		disposeHighlights();
 		highlightWidget(selected);
@@ -605,7 +661,7 @@ public class CssSpyPart {
 		propsComposite.setLayout(propsTableLayout);
 
 		// / THE CSS RULES
-		cssRules = new Text(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
+		cssRules = new StyledText(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
 		cssRules.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		// / THE CSS PROPERTIES TABLE (again)
