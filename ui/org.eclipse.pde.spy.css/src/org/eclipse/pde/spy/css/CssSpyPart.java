@@ -306,11 +306,12 @@ public class CssSpyPart {
 		if (element.getAttribute("style") != null) { //$NON-NLS-1$
 			sb.append(MessageFormat.format("\n\n{0}\n  ", Messages.CssSpyPart_SWT_Style_Bits)); //$NON-NLS-1$
 //			Util.join(sb, element.getAttribute("style").split(" +"), "\n  "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			String[] test = element.getAttribute("style").split(" +");
+//			String[] test = element.getAttribute("style").split(" +");
 //			Composite nw = (Composite) element.getNativeWidget();
 //			StyledText styledText = new StyledText(nw, SWT.BORDER | SWT.V_SCROLL);
 			
-//			Commment test
+			
+			
 //			for (String string: test) {
 //				if(string.startsWith("SWT.")) {
 //					string = string.substring(4);
@@ -325,6 +326,19 @@ public class CssSpyPart {
 //				sb.append("\n  ");
 //				
 //			}
+			
+			if (selected instanceof Button) {
+				Button button = (Button) selected;
+				ArrayList<String> test = button.getStyles();
+				
+				if (!test.isEmpty()) {
+					for (String s: test) {
+						sb.append("SWT.").append(s);
+						sb.append("\n  ");
+					}
+				}
+			}
+			
 			
 		
 		}
